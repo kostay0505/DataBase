@@ -1,0 +1,5 @@
+.env
+trilium-data/
+node_modules/
+.next/
+*.log
