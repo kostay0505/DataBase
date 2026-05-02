@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getNotes } from '@/lib/trilium';
+import { getNotes, Note } from '@/lib/trilium';
 
 export default async function NotesPage({
   searchParams,
@@ -7,7 +7,7 @@ export default async function NotesPage({
   searchParams: { q?: string };
 }) {
   const query = searchParams.q ?? '';
-  let notes = [];
+  let notes: Note[] = [];
   let error = '';
 
   try {
