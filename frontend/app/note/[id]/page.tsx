@@ -8,10 +8,12 @@ export default async function NotePage({ params }: { params: { id: string } }) {
   let error = '';
 
   try {
-    [note, content] = await Promise.all([
-      getNote(params.id),
-      getNoteContent(params.id),
-    ]);
+    note = await getNote(params.id);
+    try {
+      content = await getNoteContent(params.id);
+    } catch {
+      content = '';
+    }
   } catch {
     error = 'Заметка не найдена или Trilium недоступен.';
   }
