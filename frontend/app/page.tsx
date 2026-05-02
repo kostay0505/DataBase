@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { getNotes } from '@/lib/trilium';
+import { getNotes, Note } from '@/lib/trilium';
 
 export default async function Home() {
-  let recentNotes = [];
+  let recentNotes: Note[] = [];
   try {
     recentNotes = await getNotes('');
   } catch {
