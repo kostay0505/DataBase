@@ -22,7 +22,7 @@ export interface NoteWithContent extends Note {
 
 export async function getNotes(search: string = ''): Promise<Note[]> {
   const res = await fetch(`${BASE}/etapi/notes?search=${encodeURIComponent(search)}`, {
-    headers,
+    headers: headers(),
     cache: 'no-store',
   });
   if (!res.ok) throw new Error('Failed to fetch notes');
@@ -32,7 +32,7 @@ export async function getNotes(search: string = ''): Promise<Note[]> {
 
 export async function getNote(id: string): Promise<Note> {
   const res = await fetch(`${BASE}/etapi/notes/${id}`, {
-    headers,
+    headers: headers(),
     cache: 'no-store',
   });
   if (!res.ok) throw new Error('Failed to fetch note');
@@ -41,7 +41,7 @@ export async function getNote(id: string): Promise<Note> {
 
 export async function getNoteContent(id: string): Promise<string> {
   const res = await fetch(`${BASE}/etapi/notes/${id}/content`, {
-    headers,
+    headers: headers(),
     cache: 'no-store',
   });
   if (!res.ok) throw new Error('Failed to fetch note content');
@@ -51,7 +51,7 @@ export async function getNoteContent(id: string): Promise<string> {
 export async function createNote(title: string, content: string): Promise<Note> {
   const res = await fetch(`${BASE}/etapi/create-note`, {
     method: 'POST',
-    headers,
+    headers: headers(),
     body: JSON.stringify({ parentNoteId: 'root', title, content, type: 'text' }),
   });
   if (!res.ok) throw new Error('Failed to create note');
@@ -73,7 +73,7 @@ export async function updateNoteContent(id: string, content: string): Promise<vo
 export async function deleteNote(id: string): Promise<void> {
   const res = await fetch(`${BASE}/etapi/notes/${id}`, {
     method: 'DELETE',
-    headers,
+    headers: headers(),
   });
   if (!res.ok) throw new Error('Failed to delete note');
 }
