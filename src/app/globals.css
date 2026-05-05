@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #30363d transparent;
+}
+
+body {
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+/* TipTap editor styles */
+.tiptap-editor .ProseMirror {
+  outline: none;
+  min-height: 400px;
+}
+
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #484f58;
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+.tiptap-editor .ProseMirror h1 { @apply text-2xl font-bold mt-6 mb-3 text-gray-100; }
+.tiptap-editor .ProseMirror h2 { @apply text-xl font-bold mt-5 mb-2 text-gray-100; }
+.tiptap-editor .ProseMirror h3 { @apply text-lg font-semibold mt-4 mb-2 text-gray-200; }
+.tiptap-editor .ProseMirror p  { @apply my-2 text-gray-300 leading-relaxed; }
+.tiptap-editor .ProseMirror ul { @apply list-disc pl-6 my-2 text-gray-300; }
+.tiptap-editor .ProseMirror ol { @apply list-decimal pl-6 my-2 text-gray-300; }
+.tiptap-editor .ProseMirror li { @apply my-1; }
+.tiptap-editor .ProseMirror strong { @apply font-bold text-gray-100; }
+.tiptap-editor .ProseMirror em { @apply italic; }
+.tiptap-editor .ProseMirror code { @apply bg-gray-800 text-violet-300 px-1.5 py-0.5 rounded text-sm font-mono; }
+.tiptap-editor .ProseMirror pre  { @apply bg-gray-900 border border-gray-700 rounded-lg p-4 my-3 overflow-x-auto; }
+.tiptap-editor .ProseMirror pre code { @apply bg-transparent text-gray-300 p-0; }
+.tiptap-editor .ProseMirror blockquote { @apply border-l-4 border-violet-600 pl-4 my-3 text-gray-400 italic; }
+.tiptap-editor .ProseMirror hr { @apply border-gray-700 my-4; }
+.tiptap-editor .ProseMirror a { @apply text-violet-400 underline hover:text-violet-300; }
+
+/* Hashtag highlight */
+.tiptap-editor .ProseMirror .hashtag {
+  @apply text-violet-400 font-medium;
+}

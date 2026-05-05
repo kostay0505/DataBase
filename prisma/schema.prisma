@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Folder {
+  id        String   @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    Folder?  @relation("FolderTree", fields: [parentId], references: [id])
+  children  Folder[] @relation("FolderTree")
+  notes     Note[]
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Note {
+  id        String        @id @default(cuid())
+  title     String
+  content   String        @default("")
+  type      NoteType      @default(TEXT)
+  folderId  String?
+  folder    Folder?       @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  tags      NoteTag[]
+  versions  NoteVersion[]
+  links     NoteLink[]    @relation("SourceNote")
+  backlinks NoteLink[]    @relation("TargetNote")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum NoteType {
+  TEXT
+  TEMPLATE
+  CANVAS
+}
+
+model Tag {
+  id    String    @id @default(cuid())
+  name  String    @unique
+  color String    @default("#8b5cf6")
+  notes NoteTag[]
+}
+
+model NoteTag {
+  noteId String
+  tagId  String
+  note   Note   @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([noteId, tagId])
+}
+
+model NoteVersion {
+  id        String   @id @default(cuid())
+  noteId    String
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  content   String
+  title     String
+  createdAt DateTime @default(now())
+}
+
+model NoteLink {
+  id       String @id @default(cuid())
+  sourceId String
+  targetId String
+  label    String @default("")
+  source   Note   @relation("SourceNote", fields: [sourceId], references: [id], onDelete: Cascade)
+  target   Note   @relation("TargetNote", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, targetId])
+}
