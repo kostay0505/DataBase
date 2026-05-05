@@ -1,5 +1,23 @@
-.env
-trilium-data/
+# Dependencies
 node_modules/
+frontend/node_modules/
+bot/node_modules/
+
+# Next.js
 .next/
+out/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Misc
+.DS_Store
 *.log
+npm-debug.log*
+trilium-data/
+
+# Claude / OMC
+.claude/
+.omc/

@@ -1,29 +1,15 @@
 services:
-  trilium:
-    image: zadam/trilium:latest
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pigulevsky
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pigulevsky_db
     ports:
-      - "8080:8080"
+      - "5432:5432"
     volumes:
-      - ./trilium-data:/home/node/trilium-data
+      - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - TRILIUM_URL=http://trilium:8080
-      - TRILIUM_TOKEN=${TRILIUM_TOKEN}
-    depends_on:
-      - trilium
-    restart: unless-stopped
-
-  bot:
-    build: ./bot
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-      - TRILIUM_URL=http://trilium:8080
-      - TRILIUM_TOKEN=${TRILIUM_TOKEN}
-    depends_on:
-      - trilium
-    restart: unless-stopped
+volumes:
+  postgres_data:
