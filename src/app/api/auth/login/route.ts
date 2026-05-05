@@ -1,16 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { signToken } from '@/lib/auth'
+import fs from 'fs'
+import path from 'path'
+
+function loadCredentials(): { login: string; hash: string } | null {
+  try {
+    const file = path.join(process.cwd(), '.credentials.json')
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'))
+    if (data.login && data.hash) return data
+  } catch {}
+  const login = process.env.ADMIN_LOGIN
+  const hash = process.env.ADMIN_PASSWORD_HASH
+  if (login && hash) return { login, hash }
+  return null
+}
 
 export async function POST(req: NextRequest) {
   const { login, password } = await req.json()
 
-  const adminLogin = process.env.ADMIN_LOGIN
-  const adminHash = process.env.ADMIN_PASSWORD_HASH
+  const creds = loadCredentials()
 
-  if (!adminLogin || !adminHash) {
+  if (!creds) {
     return NextResponse.json({ error: 'Server not configured' }, { status: 500 })
   }
+
+  const { login: adminLogin, hash: adminHash } = creds
 
   if (login !== adminLogin || !(await bcrypt.compare(password, adminHash))) {
     return NextResponse.json({ error: 'Неверный логин или пароль' }, { status: 401 })
